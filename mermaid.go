@@ -36,10 +36,10 @@ func New(
 
 func (w *Worker) Bind() {
 	w.BindViper()
+	w.BindContainer()
 }
 
 func (w *Worker) BindViper() {
-	// bindFlags(w.CMD, w.Config)
 
 	// Read config from giving file path or filename.yaml.
 	cfgFile := w.Config.GetString("config")
@@ -66,16 +66,15 @@ func (w *Worker) BindViper() {
 	w.Config.AutomaticEnv()
 	w.Config.SetEnvPrefix(w.ENVPrefix)
 	w.Config.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+	w.Config.SetTypeByDefaultValue(true)
+
+	err := BindFlags(w.CMD, w.Config)
+	if err != nil {
+		w.Logger.Error(err)
+	}
 }
 
-func bindFlags(cmd *cobra.Command, cfg *viper.Viper) error {
-	if err := cfg.BindPFlags(cmd.Flags()); err != nil {
-		return err
-	}
-	for _, subCmd := range cmd.Commands() {
-		if err := bindFlags(subCmd, cfg); err != nil {
-			return err
-		}
-	}
+func (w *Worker) BindContainer() error {
+	w.Logger.Info("BindContainer")
 	return nil
 }
