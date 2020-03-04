@@ -245,7 +245,7 @@ func TestBindContainer(t *testing.T) {
 			exec: func(container *dig.Container) error {
 				type INPUT struct {
 					dig.In
-					V1 int32 `name:"v1"`
+					V1 int `name:"v1"`
 				}
 				err := container.Invoke(func(input INPUT) {})
 				return err
