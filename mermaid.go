@@ -8,6 +8,7 @@ import (
 	"strings"
 )
 
+// Worker .
 type Worker struct {
 	Container *dig.Container
 	CMD       *cobra.Command
@@ -16,30 +17,64 @@ type Worker struct {
 	ENVPrefix string
 }
 
+// New return new worker .
 func New(
-	envPrefix string,
-	c *dig.Container,
+	cmd *cobra.Command,
 	config *viper.Viper,
 	logger *log.Logger,
-	cmd *cobra.Command,
+	envPrefix string,
 ) *Worker {
 	worker := Worker{
-		Container: c,
+		Container: dig.New(),
+		CMD:       cmd,
 		Config:    config,
 		Logger:    logger,
-		CMD:       cmd,
 		ENVPrefix: envPrefix,
 	}
 	worker.Bind()
 	return &worker
 }
 
-func (w *Worker) Bind() {
-	w.BindViper()
+// Run .
+func (w *Worker) Run(runable interface{}, initializers ...interface{}) error {
+	container := w.Container
+	for _, initFn := range initializers {
+		if err := container.Provide(initFn); err != nil {
+			w.Logger.Error(err)
+			return err
+		}
+	}
+
+	if err := container.Provide(
+		func() *viper.Viper { return w.Config },
+		dig.Name("config"),
+	); err != nil {
+		return err
+	}
+
+	if err := container.Provide(
+		func() *log.Logger { return w.Logger },
+		dig.Name("logger"),
+	); err != nil {
+		return err
+	}
+
+	return dig.RootCause(container.Invoke(runable))
 }
 
-func (w *Worker) BindViper() {
+// Bind .
+func (w *Worker) Bind() {
+	w.BindViper()
+	if err := BindContainer(w.Config, w.Container); err != nil {
+		w.Logger.Error(err)
+	}
+}
 
+// BindViper will
+//  - load config file if exists.
+//  - load environment with prefix.
+//  - bind cmd flag to cfg file and provide to container.
+func (w *Worker) BindViper() {
 	// Read config from giving file path or filename.yaml.
 	cfgFile := w.Config.GetString("config")
 	if cfgFile != "" {
