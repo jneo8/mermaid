@@ -80,7 +80,7 @@ func TestBindFlags(t *testing.T) {
 				cmd.Flags().AddFlagSet(f)
 				return cmd
 			}(),
-			want: map[string]interface{}{"v1": 100},
+			want: map[string]interface{}{"v1": time.Duration(100)},
 		},
 		{
 			name: "durationSlice",
@@ -110,13 +110,15 @@ func TestBindFlags(t *testing.T) {
 			name: "float32",
 			cmd: func() *cobra.Command {
 				f := setupFlagSet()
-				f.Float32("v1", 1.8, "v1")
+				f.Float32("v1", 1.1, "v1")
 
 				cmd := &cobra.Command{}
 				cmd.Flags().AddFlagSet(f)
 				return cmd
 			}(),
-			want: map[string]interface{}{"v1": float32(1.8)},
+			// viper will turn float32 to float64 when Get value.
+			// See https://godoc.org/github.com/spf13/viper#Viper.Get
+			want: map[string]interface{}{"v1": float64(float32(1.1))},
 		},
 		{
 			name: "float32Slice",
@@ -166,6 +168,8 @@ func TestBindFlags(t *testing.T) {
 			}(),
 			want: map[string]interface{}{"v1": 1},
 		},
+		// For int8, int16, int32. viper now default return type is int.
+		// See https://godoc.org/github.com/spf13/viper#Viper.Get
 		{
 			name: "int8",
 			cmd: func() *cobra.Command {
@@ -176,7 +180,7 @@ func TestBindFlags(t *testing.T) {
 				cmd.Flags().AddFlagSet(f)
 				return cmd
 			}(),
-			want: map[string]interface{}{"v1": int8(1)},
+			want: map[string]interface{}{"v1": int(1)},
 		},
 		{
 			name: "int16",
@@ -188,7 +192,7 @@ func TestBindFlags(t *testing.T) {
 				cmd.Flags().AddFlagSet(f)
 				return cmd
 			}(),
-			want: map[string]interface{}{"v1": int16(1)},
+			want: map[string]interface{}{"v1": int(1)},
 		},
 		{
 			name: "int32",
@@ -200,7 +204,7 @@ func TestBindFlags(t *testing.T) {
 				cmd.Flags().AddFlagSet(f)
 				return cmd
 			}(),
-			want: map[string]interface{}{"v1": int32(1)},
+			want: map[string]interface{}{"v1": int(1)},
 		},
 		{
 			name: "int64",
@@ -281,18 +285,16 @@ func TestBindFlags(t *testing.T) {
 				cmd.Flags().AddFlagSet(f)
 				return cmd
 			}(),
-			want: map[string]interface{}{"v1": net.ParseIP("0.0.0.0")},
+			want: map[string]interface{}{"v1": net.ParseIP("0.0.0.0").DefaultMask()},
 		},
 		{
 			name: "ipNet",
 			cmd: func() *cobra.Command {
 				f := setupFlagSet()
+				_, def, _ := net.ParseCIDR("0.0.0.0/0")
 				f.IPNet(
 					"v1",
-					net.IPNet{
-						IP:   net.ParseIP("0.0.0.0"),
-						Mask: net.ParseIP("0.0.0.0").DefaultMask(),
-					},
+					*def,
 					"v1",
 				)
 
@@ -301,10 +303,10 @@ func TestBindFlags(t *testing.T) {
 				return cmd
 			}(),
 			want: map[string]interface{}{
-				"v1": net.IPNet{
-					IP:   net.ParseIP("0.0.0.0"),
-					Mask: net.ParseIP("0.0.0.0").DefaultMask(),
-				},
+				"v1": func() net.IPNet {
+					_, def, _ := net.ParseCIDR("0.0.0.0/0")
+					return *def
+				}(),
 			},
 		},
 		{
