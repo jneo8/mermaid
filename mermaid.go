@@ -36,7 +36,6 @@ func New(
 
 func (w *Worker) Bind() {
 	w.BindViper()
-	w.BindContainer()
 }
 
 func (w *Worker) BindViper() {
@@ -72,9 +71,4 @@ func (w *Worker) BindViper() {
 	if err != nil {
 		w.Logger.Error(err)
 	}
-}
-
-func (w *Worker) BindContainer() error {
-	w.Logger.Info("BindContainer")
-	return nil
 }

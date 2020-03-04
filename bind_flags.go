@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/viper"
 )
 
-// BindFlags .
+// BindFlags will bind cobra flagset to viper as default value.
 func BindFlags(cmd *cobra.Command, cfg *viper.Viper) error {
 	// Need to set viper.typeByDefaultValue to true to get the value with correct type.
 	cfg.SetTypeByDefaultValue(true)
