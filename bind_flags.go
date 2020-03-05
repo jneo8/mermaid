@@ -85,14 +85,5 @@ func BindFlags(cmd *cobra.Command, cfg *viper.Viper) error {
 		cfg.SetDefault(flag.Name, val)
 	})
 
-	if err := cfg.BindPFlags(cmd.Flags()); err != nil {
-		return err
-	}
-
-	for _, subCmd := range cmd.Commands() {
-		if err := BindFlags(subCmd, cfg); err != nil {
-			return err
-		}
-	}
-	return nil
+	return cfg.BindPFlags(cmd.Flags())
 }
