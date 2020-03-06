@@ -9,7 +9,14 @@ import (
 
 // BindContainer provide viper's flagset to container.
 func BindContainer(cfg *viper.Viper, container *dig.Container) error {
-	for key, val := range cfg.AllSettings() {
+	for k, v := range cfg.AllSettings() {
+		key := k
+		val := v
+
+		// Skip help.
+		if key == "help" {
+			continue
+		}
 		var getter interface{}
 		switch val.(type) {
 		case bool:
