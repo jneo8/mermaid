@@ -1,0 +1,20 @@
+name: testing
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    runs-on: [ubuntu-latest]
+    steps:
+      - name: Install Go
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.14.x
+      - name: Checkout code
+        uses: actions/checkout@1
+      - name: Install golang ci-lint
+        run: |
+          go get github.com/golangci/golangci-lint
+      - name: Run linters
+        run: |
+          golangci-lint run 
