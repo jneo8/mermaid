@@ -1,5 +1,7 @@
 # Mermaid
 
+![testing](https://github.com/jneo8/mermaid/workflows/testing/badge.svg)
+
 Mermaid is a tool helping user use dependency injection when using [Cobra](https://github.com/spf13/cobra).
 
 ## What Mermaid do?
