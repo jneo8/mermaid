@@ -62,7 +62,9 @@ func TestBindFlags(t *testing.T) {
 				f := setupFlagSet()
 				f.CountP("v1", "v", "a counter")
 
-				f.Parse([]string{"-vvv"})
+				if err := f.Parse([]string{"-vvv"}); err != nil {
+					t.Error(err)
+				}
 
 				cmd := &cobra.Command{}
 				cmd.Flags().AddFlagSet(f)
@@ -447,10 +449,12 @@ func TestBindFlags(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			cfg := viper.New()
 			cfg.SetTypeByDefaultValue(true)
-			BindFlags(
+			if err := BindFlags(
 				tt.cmd,
 				cfg,
-			)
+			); err != nil {
+				t.Error(err)
+			}
 			if !reflect.DeepEqual(cfg.AllSettings(), tt.want) {
 				t.Errorf("BindFlags() bind flag: %#v want: %#v", cfg.AllSettings(), tt.want)
 			}

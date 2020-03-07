@@ -488,7 +488,9 @@ func TestBindContainer(t *testing.T) {
 		tt := tt
 		t.Run(tt.name, func(t *testing.T) {
 			container := dig.New()
-			BindContainer(tt.cfg, container)
+			if err := BindContainer(tt.cfg, container); err != nil {
+				t.Error(err)
+			}
 
 			err := tt.exec(container)
 			if err != nil {

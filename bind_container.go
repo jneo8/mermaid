@@ -18,20 +18,18 @@ func BindContainer(cfg *viper.Viper, container *dig.Container) error {
 			continue
 		}
 		var getter interface{}
-		switch val.(type) {
+		switch value := val.(type) {
 		case bool:
 			getter = func() bool {
 				return cfg.GetBool(key)
 			}
 		case []bool:
 			getter = func() []bool {
-				newVal := val.([]bool)
-				return newVal
+				return value
 			}
 		case []byte:
 			getter = func() []byte {
-				newVal := val.([]byte)
-				return newVal
+				return value
 			}
 		case time.Duration:
 			getter = func() time.Duration {
@@ -39,8 +37,7 @@ func BindContainer(cfg *viper.Viper, container *dig.Container) error {
 			}
 		case []time.Duration:
 			getter = func() []time.Duration {
-				newVal := val.([]time.Duration)
-				return newVal
+				return value
 			}
 		// viper will turn float32 to float64 when Get value.
 		// See https://godoc.org/github.com/spf13/viper#Viper.Get
@@ -50,13 +47,11 @@ func BindContainer(cfg *viper.Viper, container *dig.Container) error {
 			}
 		case []float32:
 			getter = func() []float32 {
-				newVal := val.([]float32)
-				return newVal
+				return value
 			}
 		case []float64:
 			getter = func() []float64 {
-				newVal := val.([]float64)
-				return newVal
+				return value
 			}
 		case int: // count, int8, int16, int32
 			getter = func() int {
@@ -68,38 +63,31 @@ func BindContainer(cfg *viper.Viper, container *dig.Container) error {
 			}
 		case []int:
 			getter = func() []int {
-				newVal := val.([]int)
-				return newVal
+				return value
 			}
 		case []int32:
 			getter = func() []int32 {
-				newVal := val.([]int32)
-				return newVal
+				return value
 			}
 		case []int64:
 			getter = func() []int64 {
-				newVal := val.([]int64)
-				return newVal
+				return value
 			}
 		case net.IP:
 			getter = func() net.IP {
-				newVal := val.(net.IP)
-				return newVal
+				return value
 			}
 		case []net.IP:
 			getter = func() []net.IP {
-				newVal := val.([]net.IP)
-				return newVal
+				return value
 			}
 		case net.IPMask:
 			getter = func() net.IPMask {
-				newVal := val.(net.IPMask)
-				return newVal
+				return value
 			}
 		case net.IPNet:
 			getter = func() net.IPNet {
-				newVal := val.(net.IPNet)
-				return newVal
+				return value
 			}
 		case string:
 			getter = func() string {
@@ -111,18 +99,15 @@ func BindContainer(cfg *viper.Viper, container *dig.Container) error {
 			}
 		case map[string]int: // string_to_int
 			getter = func() map[string]int {
-				newVal := val.(map[string]int)
-				return newVal
+				return value
 			}
 		case map[string]int64: // string_to_int64
 			getter = func() map[string]int64 {
-				newVal := val.(map[string]int64)
-				return newVal
+				return value
 			}
 		case map[string]string: // string_to_sting
 			getter = func() map[string]string {
-				newVal := val.(map[string]string)
-				return newVal
+				return value
 			}
 		}
 		if err := container.Provide(getter, dig.Name(key)); err != nil {
