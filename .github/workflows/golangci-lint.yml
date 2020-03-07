@@ -2,7 +2,7 @@ name: reviewdog
 on: [push, pull_request]
 
 jobs:
-    golangci-lint check:
+    golangci-lint-check:
         name: golangci-lint
         runs-on: ubuntu-latest
         steps:
