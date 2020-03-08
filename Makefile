@@ -3,7 +3,7 @@ GOFMT ?= gofmt "-s"
 PACKAGES ?= $(shell $(GO) list ./...)
 VETPACKAGES ?= $(shell $(GO) list ./... | grep -v /examples/)
 GOFILES := $(shell find . -name "*.go")
-TESTFOLDER := $(shell $(GO) list ./... | grep -E 'mermaid$$' | grep -v examples)
+TESTFOLDER := $(shell $(GO) list ./... | grep -E 'mermaid$$|cmd$$' | grep -v examples)
 TESTTAGS ?= ""
 
 ##@ Show

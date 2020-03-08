@@ -43,7 +43,7 @@ func NewHttpService(opts ServiceOptions) Service {
 	}
 }
 
-var cmd = &cobra.Command{
+var rootCMD = &cobra.Command{
 	Use:   "exmaple",
 	Short: "exmaple",
 	RunE: func(cmd *cobra.Command, args []string) error {
@@ -63,11 +63,11 @@ var cmd = &cobra.Command{
 }
 
 func init() {
-	cmd.Flags().String("username", "userA", "username")
+	rootCMD.Flags().String("username", "userA", "username")
 }
 
 func main() {
-	if err := cmd.Execute(); err != nil {
+	if err := rootCMD.Execute(); err != nil {
 		log.Error(err)
 		os.Exit(1)
 	}
