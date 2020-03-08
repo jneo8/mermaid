@@ -3,7 +3,8 @@
 ![testing](https://github.com/jneo8/mermaid/workflows/testing/badge.svg)
 [![codecov](https://codecov.io/gh/jneo8/mermaid/branch/master/graph/badge.svg)](https://codecov.io/gh/jneo8/mermaid)
 [![Go Report Card](https://goreportcard.com/badge/github.com/jneo8/mermaid)](https://goreportcard.com/report/github.com/jneo8/mermaid)
-[![Release](https://img.shields.io/github/release/jneo8/mermaid.svg?style=flat-square)](https://github.com/jneo8/mermaid/releases)
+[![GoDoc](https://godoc.org/github.com/jneo8/mermaid?status.svg)](https://godoc.org/github.com/jneo8/mermaid)
+[![Release](https://img.shields.io/github/release/jneo8/mermaid.svg?style=plastic)](https://github.com/jneo8/mermaid/releases)
 [![TODOs](https://badgen.net/https/api.tickgit.com/badgen/github.com/jneo8/mermaid)](https://www.tickgit.com/browse?repo=github.com/jneo8/mermaid)
 
 Mermaid is a tool helping user use dependency injection when using [Cobra](https://github.com/spf13/cobra).
