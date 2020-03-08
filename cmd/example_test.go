@@ -27,7 +27,9 @@ func TestRootCMD(t *testing.T) {
 	defer resp.Body.Close()
 
 	var result map[string]interface{}
-	json.NewDecoder(resp.Body).Decode(&result)
+	if err := json.NewDecoder(resp.Body).Decode(&result); err != nil {
+		t.Error(err)
+	}
 
 	assert.Equal(t, result["message"], "userB")
 }
