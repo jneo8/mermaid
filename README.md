@@ -7,17 +7,19 @@
 [![Release](https://img.shields.io/github/release/jneo8/mermaid.svg?style=plastic)](https://github.com/jneo8/mermaid/releases)
 [![TODOs](https://badgen.net/https/api.tickgit.com/badgen/github.com/jneo8/mermaid)](https://www.tickgit.com/browse?repo=github.com/jneo8/mermaid)
 
-Mermaid is a tool helping user use dependency injection when using [Cobra](https://github.com/spf13/cobra).
+Mermaid is a tool helping user use [Cobra](https://github.com/spf13/cobra), [Viper](https://github.com/spf13/viper) and [dig](https://github.com/uber-go/dig) together.
 
 ## What Mermaid do?
 
-Mermaid bind flags from cobra to viper as global settings. And provide all settings to container automatically. 
+Mermaid bind flags from cobra to viper as settings. And provide all settings to dig container automatically.
 Make it easy to setup and write testing.
-
 
 ## Example
 
-cmd/example.go
+
+### Basic use
+
+cmd/example/main.go
 
 ```go
 package main
@@ -96,7 +98,7 @@ func main() {
 }
 ```
 
-cmd/example_test.go
+cmd/example/main_test.go
 
 ```go
 package main
@@ -136,6 +138,42 @@ func TestRootCMD(t *testing.T) {
 	json.NewDecoder(resp.Body).Decode(&result)
 
 	assert.Equal(t, result["message"], "userB")
+}
+```
+
+### Use customized logger
+
+cmd/customized_mermaid/main.go
+
+```go
+package main
+
+import (
+	"github.com/jneo8/mermaid"
+	log "github.com/sirupsen/logrus"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+)
+
+func main() {
+	worker, err := mermaid.NewMermaid(
+		&cobra.Command{},
+		viper.New(),
+		log.New(),
+		"",
+	)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	runable := func(logger *log.Logger) error {
+		logger.Info("Customized mermaid worker")
+		return nil
+	}
+	initializers := []interface{}{}
+	if err := worker.Execute(runable, initializers...); err != nil {
+		log.Fatal(err)
+	}
 }
 ```
 
