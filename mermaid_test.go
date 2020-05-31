@@ -1,11 +1,13 @@
 package mermaid
 
 import (
+	"reflect"
+	"testing"
+
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"go.uber.org/dig"
-	"testing"
 )
 
 func TestNewMermaidWorker(t *testing.T) {
@@ -56,5 +58,61 @@ func TestNewMermaidWorker(t *testing.T) {
 
 	if err := cmd.Execute(); err != nil {
 		t.Error(err)
+	}
+}
+
+func TestNewMermaid(t *testing.T) {
+	type args struct {
+		cmd       *cobra.Command
+		config    *viper.Viper
+		logger    *log.Logger
+		envPrefix string
+	}
+	tests := []struct {
+		name      string
+		args      args
+		want      *Mermaid
+		wantErr   bool
+		deepEqual bool
+	}{
+		// TODO: Add test cases.
+		{
+			name: "Basic test",
+			args: args{
+				cmd:       &cobra.Command{},
+				config:    viper.New(),
+				logger:    log.New(),
+				envPrefix: "",
+			},
+			want: func() *Mermaid {
+				worker := &Mermaid{
+					Container: dig.New(),
+					CMD:       &cobra.Command{},
+					Config:    viper.New(),
+					Logger:    log.New(),
+					ENVPrefix: "",
+				}
+				if err := worker.Bind(); err != nil {
+					t.Error(err)
+				}
+				return worker
+			}(),
+			wantErr:   false,
+			deepEqual: false,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := NewMermaid(tt.args.cmd, tt.args.config, tt.args.logger, tt.args.envPrefix)
+			if (err != nil) != tt.wantErr {
+				t.Errorf("NewMermaid() error = %v, wantErr %v", err, tt.wantErr)
+				return
+			}
+			if tt.deepEqual {
+				if !reflect.DeepEqual(got, tt.want) {
+					t.Errorf("NewMermaid() = %v, want %v", got, tt.want)
+				}
+			}
+		})
 	}
 }
