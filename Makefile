@@ -3,7 +3,7 @@ GOFMT ?= gofmt "-s"
 PACKAGES ?= $(shell $(GO) list ./...)
 VETPACKAGES ?= $(shell $(GO) list ./... | grep -v /examples/)
 GOFILES := $(shell find . -name "*.go")
-TESTFOLDER := $(shell $(GO) list ./... | grep -E 'mermaid$$|cmd$$' | grep -v examples)
+TESTFOLDER := $(shell $(GO) list ./... | grep -E 'mermaid$$|cmd' | grep -v examples)
 TESTTAGS ?= ""
 
 ##@ Show
@@ -17,7 +17,7 @@ count-line:  ## Count *.go line in project
 test:  ## Run test
 	echo "mode: count" > coverage.out
 	for d in $(TESTFOLDER); do \
-		$(GO) test -tags $(TESTTAGS) -v -covermode=count -coverprofile=profile.out $$d > tmp.out; \
+		$(GO) test -tags $(TESTTAGS) -v -covermode=count -coverprofile=profile.out $$d | richgo testfilter > tmp.out; \
 		cat tmp.out; \
 		if grep -q "^--- FAIL" tmp.out; then \
 			rm tmp.out; \
