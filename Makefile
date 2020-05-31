@@ -13,6 +13,10 @@ count-line:  ## Count *.go line in project
 
 ##@ test
 
+.PHONY: install-richgo
+install-richgo:  ## Install richgo
+	go get -u github.com/kyoh86/richgo
+
 .PHONY: test
 test:  ## Run test
 	echo "mode: count" > coverage.out

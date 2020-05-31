@@ -36,6 +36,9 @@ jobs:
 
             - uses: actions/checkout@v2
 
+            - name: Install richgo
+              run: make install-richgo
+
             - name: testing
               run: make test
 
