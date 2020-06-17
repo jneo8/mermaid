@@ -1,7 +1,7 @@
 package mermaid
 
 import (
-	"github.com/onrik/logrus/filename"
+	"github.com/keepeye/logrus-filename"
 	log "github.com/sirupsen/logrus"
 )
 
