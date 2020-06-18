@@ -97,7 +97,7 @@ func (m *Mermaid) BindViper() {
 
 	if cfgFile != "" {
 		m.Config.SetConfigFile(cfgFile)
-		m.Logger.Infof("Use config %v", cfgFile)
+		m.Logger.Infof("Use config %s", cfgFile)
 	} else {
 		var cfgName string
 		if cfgFlag := m.CMD.Flags().Lookup("config_name"); cfgFlag != nil {
@@ -110,13 +110,18 @@ func (m *Mermaid) BindViper() {
 		m.Config.AddConfigPath("/")
 		m.Config.AddConfigPath("$HOME")
 		m.Config.AddConfigPath("./config")
-		m.Logger.Infof("Use config name %v", cfgName)
+
+		if len(cfgName) > 0 {
+			m.Logger.Infof("Use config name %s", cfgName)
+		} else {
+			m.Logger.Infof("Use default config name %s", "config")
+		}
 	}
 
 	if err := m.Config.ReadInConfig(); err != nil {
 		m.Logger.Warning(err)
 	} else {
-		m.Logger.Infof("Using config file %v", m.Config.ConfigFileUsed())
+		m.Logger.Infof("Using config file %s", m.Config.ConfigFileUsed())
 	}
 
 	// Load var from env.
