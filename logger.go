@@ -19,7 +19,6 @@ func NewLogger() *log.Logger {
 
 // SetLoggerLevel setup logger's log level using viper "log_level" field .
 func SetLoggerLevel(logger *log.Logger, cfg *viper.Viper) {
-	cfg.SetDefault("log_level", "Info")
 	level := cfg.GetString("log_level")
 	switch level {
 	case "Debug":
@@ -35,4 +34,5 @@ func SetLoggerLevel(logger *log.Logger, cfg *viper.Viper) {
 	default:
 		logger.SetLevel(log.InfoLevel)
 	}
+	logger.Infof("Log level: %s", logger.GetLevel().String())
 }

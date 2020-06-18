@@ -86,6 +86,7 @@ func (m *Mermaid) Bind() error {
 // BindViper will
 //  - load config file if exists.
 //  - load environment with prefix.
+//  - set default log level field.
 func (m *Mermaid) BindViper() {
 
 	// Read config from giving file path or filename.yaml.
@@ -128,4 +129,6 @@ func (m *Mermaid) BindViper() {
 	m.Config.AutomaticEnv()
 	m.Config.SetEnvPrefix(m.ENVPrefix)
 	m.Config.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
+	// Set default log level.
+	m.Config.SetDefault("log_level", "Info")
 }
