@@ -130,5 +130,5 @@ func (m *Mermaid) BindViper() {
 	m.Config.SetEnvPrefix(m.ENVPrefix)
 	m.Config.SetEnvKeyReplacer(strings.NewReplacer(".", "_"))
 	// Set default log level.
-	m.Config.SetDefault("log_level", "Info")
+	m.Config.SetDefault("log_level", "info")
 }

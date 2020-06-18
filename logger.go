@@ -21,15 +21,15 @@ func NewLogger() *log.Logger {
 func SetLoggerLevel(logger *log.Logger, cfg *viper.Viper) {
 	level := cfg.GetString("log_level")
 	switch level {
-	case "Debug":
+	case "debug":
 		logger.SetLevel(log.DebugLevel)
-	case "Info":
+	case "info":
 		logger.SetLevel(log.InfoLevel)
-	case "Warn":
+	case "warn":
 		logger.SetLevel(log.WarnLevel)
-	case "Error":
+	case "error":
 		logger.SetLevel(log.ErrorLevel)
-	case "Fatal":
+	case "fatal":
 		logger.SetLevel(log.FatalLevel)
 	default:
 		logger.SetLevel(log.InfoLevel)
