@@ -71,11 +71,11 @@ func (m *Mermaid) Execute(runable interface{}, initializers ...interface{}) erro
 // Bind .
 func (m *Mermaid) Bind() error {
 	m.BindViper()
-	err := BindFlags(m.CMD, m.Config)
-	if err != nil {
+	if err := BindFlags(m.CMD, m.Config); err != nil {
 		m.Logger.Error(err)
 		return err
 	}
+	SetLoggerLevel(m.Logger, m.Config)
 	if err := BindContainer(m.Config, m.Container); err != nil {
 		m.Logger.Error(err)
 		return err
