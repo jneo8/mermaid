@@ -14,6 +14,14 @@ Mermaid is a tool helping user use [Cobra](https://github.com/spf13/cobra), [Vip
 Mermaid bind flags from cobra to viper as settings. And provide all settings to dig container automatically.
 Make it easy to setup and write testing.
 
+## Basic args
+
+- `config`: config file path or filename.yaml
+
+- `config_name`: if `config` field is blank, mermaid will find config yaml file in `.`, `/`, `$HOME`, `./config`. Default name is `config`.
+
+- `log_level`: Set logger's log level. Default is info level.
+
 ## Example
 
 
