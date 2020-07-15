@@ -53,6 +53,26 @@ func BindContainer(cfg *viper.Viper, container *dig.Container) error {
 			getter = func() []float64 {
 				return value
 			}
+		case uint:
+			getter = func() uint {
+				return cfg.GetUint(key)
+			}
+		case uint8:
+			getter = func() uint8 {
+				return value
+			}
+		case uint16:
+			getter = func() uint16 {
+				return value
+			}
+		case uint32:
+			getter = func() uint32 {
+				return cfg.GetUint32(key)
+			}
+		case uint64:
+			getter = func() uint64 {
+				return cfg.GetUint64(key)
+			}
 		case int: // count, int8, int16, int32
 			getter = func() int {
 				return cfg.GetInt(key)

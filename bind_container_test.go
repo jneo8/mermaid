@@ -268,6 +268,86 @@ func TestBindContainer(t *testing.T) {
 			},
 		},
 		{
+			name: "uint",
+			cfg: func() *viper.Viper {
+				cfg := setupViper()
+				cfg.SetDefault("v1", uint(1))
+				return cfg
+			}(),
+			exec: func(container *dig.Container) error {
+				type INPUT struct {
+					dig.In
+					V1 uint `name:"v1"`
+				}
+				err := container.Invoke(func(input INPUT) {})
+				return err
+			},
+		},
+		{
+			name: "uint8",
+			cfg: func() *viper.Viper {
+				cfg := setupViper()
+				cfg.SetDefault("v1", uint8(1))
+				return cfg
+			}(),
+			exec: func(container *dig.Container) error {
+				type INPUT struct {
+					dig.In
+					V1 uint8 `name:"v1"`
+				}
+				err := container.Invoke(func(input INPUT) {})
+				return err
+			},
+		},
+		{
+			name: "uint16",
+			cfg: func() *viper.Viper {
+				cfg := setupViper()
+				cfg.SetDefault("v1", uint16(1))
+				return cfg
+			}(),
+			exec: func(container *dig.Container) error {
+				type INPUT struct {
+					dig.In
+					V1 uint16 `name:"v1"`
+				}
+				err := container.Invoke(func(input INPUT) {})
+				return err
+			},
+		},
+		{
+			name: "uint32",
+			cfg: func() *viper.Viper {
+				cfg := setupViper()
+				cfg.SetDefault("v1", uint32(1))
+				return cfg
+			}(),
+			exec: func(container *dig.Container) error {
+				type INPUT struct {
+					dig.In
+					V1 uint32 `name:"v1"`
+				}
+				err := container.Invoke(func(input INPUT) {})
+				return err
+			},
+		},
+		{
+			name: "uint64",
+			cfg: func() *viper.Viper {
+				cfg := setupViper()
+				cfg.SetDefault("v1", uint64(1))
+				return cfg
+			}(),
+			exec: func(container *dig.Container) error {
+				type INPUT struct {
+					dig.In
+					V1 uint64 `name:"v1"`
+				}
+				err := container.Invoke(func(input INPUT) {})
+				return err
+			},
+		},
+		{
 			name: "intSlice",
 			cfg: func() *viper.Viper {
 				cfg := setupViper()
