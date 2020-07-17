@@ -1,6 +1,7 @@
 package mermaid
 
 import (
+	"fmt"
 	"github.com/spf13/viper"
 	"go.uber.org/dig"
 	"net"
@@ -131,7 +132,7 @@ func BindContainer(cfg *viper.Viper, container *dig.Container) error {
 			}
 		}
 		if err := container.Provide(getter, dig.Name(key)); err != nil {
-			return err
+			return fmt.Errorf("Get key %s err: %s", key, err)
 		}
 	}
 	return nil
